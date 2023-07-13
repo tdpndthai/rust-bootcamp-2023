@@ -50,8 +50,8 @@ struct State {
 }
 
 impl State {
-    fn change_color(&mut self, color: (u8, u8, u8)) {
-        self.color = color;
+    fn change_color(&mut self, color: (i32, i32, i32)) {
+        self.color = (color.0 as u8, color.1 as u8, color.2 as u8);
     }
 
     fn quit(&mut self) {
@@ -67,8 +67,12 @@ impl State {
     }
 
     fn process(&mut self, message: Message) {
-        // TODO: create a match expression to process the different message variants
-        // Remember: When passing a tuple as a function argument, you'll need extra parentheses: fn function((t, u, p, l, e))
+        match message {
+            Message::ChangeColor(num1, num2, num3) => self.change_color((num1, num2, num3)),
+            Message::Echo(s) => self.echo(s),
+            Message::Move(p) => self.move_position(p),
+            Message::Quit => self.quit(),
+        }
     }
 }
 
